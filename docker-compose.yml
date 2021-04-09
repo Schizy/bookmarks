@@ -1,0 +1,44 @@
+version: '3.9'
+services:
+    db:
+        image: mysql:5.7
+        restart: unless-stopped
+        volumes:
+            - './data/db:/var/lib/mysql'
+        environment:
+            - MYSQL_ROOT_PASSWORD
+            - MYSQL_DATABASE
+            - MYSQL_USER
+            - MYSQL_PASSWORD
+
+    adminer:
+        image: adminer:4.7
+        restart: unless-stopped
+        ports: [ '8080:8080' ]
+
+    php:
+        depends_on:
+            - rabbitmq
+            - db
+        restart: unless-stopped
+        build: ./docker/php
+        volumes:
+            - './:/var/www:cached'
+            - /var/www/data/ # exclude data
+            - './vendor:/var/www/vendor:cached'
+
+    nginx:
+        depends_on:
+            - php
+        restart: unless-stopped
+        build: ./docker/nginx
+        ports: [ '80:80' ]
+        volumes:
+            - './public:/var/www/public'
+
+    rabbitmq:
+        image: rabbitmq:3.8-management
+        ports: [ '15672:15672' ]
+        environment:
+            - RABBITMQ_DEFAULT_USER
+            - RABBITMQ_DEFAULT_PASS
