@@ -19,7 +19,7 @@ class LinkFactory
         'flickr.com' => 'photo',
     ];
 
-    static function guessTypeFromJson(string $body): ?string
+    public static function guessTypeFromJson(string $body): ?string
     {
         $json = json_decode($body, true);
         if (null === $json) {
