@@ -21,26 +21,7 @@ restart: down up ## docker compose down & up
 php: ## Enters the PHP container
 	$(PHP) sh
 
-rp: rebuild-php
-rebuild-php: down ## Rebuilds the PHP image
-	docker build docker/php
-	docker rmi myjprogress_php
-	docker tag $$(docker images -q | head -n 1) myjprogress_php
-	$(DC) up -d #A way to use just "up" here?
-
 ## —— Database 📑 ———————————————————————————————————————————————————————————————
-#mysqldump --defaults-extra-file=/path/.sqlpwd [database] > [desiredoutput].sql
-#[mysqldump]
-#user=username
-#password=password
-#sudo chmod 600 /path/.sqlpwd && sudo chown $USER:nogroup /path/.sqlpwd
-
-db-dump: ## Backup the database as a SQL backup file (the filename as an argument)
-	 $(DB) mysqldump -uroot -proot jpgrammar | sed '1d' > $(filter-out $@,$(MAKECMDGOALS))
-
-db-load: ## Loads a SQL backup file (the filename as an argument)
-	docker exec -i $$(docker-compose ps -q db) mysql -uroot -proot jpgrammar < $(filter-out $@,$(MAKECMDGOALS)) 2> /dev/null
-
 dm: db-migration
 db-migration: ## Runs doctrine migrations
 	$(CONS) doctrine:migrations:migrate --no-interaction
@@ -69,10 +50,3 @@ help: ## Generates this list
 cs: code-style
 code-style: ## Fix code style
 	$(PHP) tools/php-cs-fixer/vendor/bin/php-cs-fixer fix src
-
-redis: ## Enters redis-cli
-	$(DC) exec redis redis-cli
-
-c: consume
-consume: ## Runs messenger:consume
-	$(CONS) messenger:consume -vv

@@ -1,31 +1,18 @@
+FROM composer:2 AS composer
+
 FROM php:7.4-fpm-alpine
 
 RUN apk add --update \
-    $PHPIZE_DEPS \
-	supervisor
+    $PHPIZE_DEPS
 
 RUN docker-php-ext-install mysqli pdo pdo_mysql
 
-ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
-RUN chmod +x /usr/local/bin/install-php-extensions && sync && \
-     install-php-extensions @composer amqp
+COPY --from=composer /usr/bin/composer /usr/bin/composer
 
-ADD php.ini /etc/php/conf.d/
-ADD php.ini /etc/php/cli/conf.d/
 ADD php.ini /usr/local/etc/php
-#ADD php-fpm.conf /etc/php/php-fpm.d/
-
-#Supervisor
-RUN mkdir -p /var/log/supervisor
-RUN mkdir /etc/supervisor.d/
-COPY supervisor.ini /etc/supervisor.d/supervisor.ini
-
-COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint
-RUN chmod +x /usr/local/bin/docker-entrypoint
 
 WORKDIR /var/www
 
 EXPOSE 9000
 
-#CMD ["php-fpm", "-F"]
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
+CMD ["php-fpm", "-F"]

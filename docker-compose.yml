@@ -18,7 +18,6 @@ services:
 
     php:
         depends_on:
-            - rabbitmq
             - db
         restart: unless-stopped
         build: ./docker/php
@@ -35,10 +34,3 @@ services:
         ports: [ '80:80' ]
         volumes:
             - './public:/var/www/public'
-
-    rabbitmq:
-        image: rabbitmq:3.8-management
-        ports: [ '15672:15672' ]
-        environment:
-            - RABBITMQ_DEFAULT_USER
-            - RABBITMQ_DEFAULT_PASS
