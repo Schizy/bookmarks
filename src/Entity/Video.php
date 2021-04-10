@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Entity\Traits\RectangularMediaTrait;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -14,6 +15,8 @@ class Video extends Link
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank
+     * @Assert\GreaterThan(0)
      */
     private $duration;
 
@@ -22,9 +25,9 @@ class Video extends Link
         return $this->duration;
     }
 
-    public function setDuration(int $duration): self
+    public function setDuration($duration): self
     {
-        $this->duration = $duration;
+        $this->duration = (int)$duration;
 
         return $this;
     }

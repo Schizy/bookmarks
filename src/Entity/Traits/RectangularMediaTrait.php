@@ -3,16 +3,21 @@
 namespace App\Entity\Traits;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 trait RectangularMediaTrait
 {
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank
+     * @Assert\GreaterThan(0)
      */
     protected $width;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank
+     * @Assert\GreaterThan(0)
      */
     protected $length;
 
@@ -21,9 +26,9 @@ trait RectangularMediaTrait
         return $this->width;
     }
 
-    public function setWidth(int $width): self
+    public function setWidth($width): self
     {
-        $this->width = $width;
+        $this->width = (int)$width;
         return $this;
     }
 
@@ -32,9 +37,9 @@ trait RectangularMediaTrait
         return $this->length;
     }
 
-    public function setLength(int $length): self
+    public function setLength($length): self
     {
-        $this->length = $length;
+        $this->length = (int)$length;
         return $this;
     }
 }

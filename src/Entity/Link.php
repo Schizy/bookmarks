@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\DiscriminatorColumn;
 use Doctrine\ORM\Mapping\DiscriminatorMap;
 use Doctrine\ORM\Mapping\InheritanceType;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=LinkRepository::class)
@@ -20,14 +21,6 @@ use Doctrine\ORM\Mapping\InheritanceType;
  */
 abstract class Link
 {
-    const VIDEO = 'video';
-    const PHOTO = 'photo';
-
-    const LINK_TYPES = [
-        'photo' => Photo::class,
-        'video' => Video::class,
-    ];
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -37,16 +30,19 @@ abstract class Link
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\Url
      */
     private $url;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     private $author;
 
@@ -54,6 +50,11 @@ abstract class Link
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
 
     public function getId(): ?int
     {
