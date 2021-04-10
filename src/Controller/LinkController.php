@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Link;
 use App\Factory\LinkFactory;
+use App\oEmbed\oEmbed;
 use App\Repository\LinkRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,10 +28,11 @@ class LinkController extends ApiController
     /**
      * @Route("", name="app_links_create", methods={"POST"})
      */
-    public function create(Request $request): Response
+    public function create(Request $request, oEmbed $embed): Response
     {
         $type = $this->guessTypeOrReturnBadRequest($request);
         $link = $this->deserialize($request, LinkFactory::LINK_TYPES[$type]);
+        $embed->hydrateLinkEntity($link);
 
         if ($errors = $this->validate($link)) {
             return $this->badRequest($errors);

@@ -19,7 +19,7 @@ trait RectangularMediaTrait
      * @Assert\NotBlank
      * @Assert\GreaterThan(0)
      */
-    protected $length;
+    protected $height;
 
     public function getWidth(): ?int
     {
@@ -32,14 +32,14 @@ trait RectangularMediaTrait
         return $this;
     }
 
-    public function getLength(): ?int
+    public function getHeight(): ?int
     {
-        return $this->length;
+        return $this->height;
     }
 
-    public function setLength($length): self
+    public function setHeight($height): self
     {
-        $this->length = (int)$length;
+        $this->height = (int)$height;
         return $this;
     }
 }
