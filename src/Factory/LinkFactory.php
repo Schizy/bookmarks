@@ -2,6 +2,7 @@
 
 namespace App\Factory;
 
+use App\Entity\Gif;
 use App\Entity\Photo;
 use App\Entity\Video;
 use Symfony\Component\Serializer\Exception\NotEncodableValueException;
@@ -11,12 +12,14 @@ class LinkFactory
     const LINK_TYPES = [
         'photo' => Photo::class,
         'video' => Video::class,
+        'gif' => Gif::class,
     ];
 
     const URL_TYPES = [
         'vimeo.com' => 'video',
 //        'youtube.com' => 'video', //We could do that too!
         'flickr.com' => 'photo',
+        'giphy.com' => 'gif'
     ];
 
     public static function guessTypeFromJson(string $body): ?string

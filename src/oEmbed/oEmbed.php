@@ -2,6 +2,7 @@
 
 namespace App\oEmbed;
 
+use App\Entity\Gif;
 use App\Entity\Link;
 use App\Entity\Photo;
 use App\Entity\Video;
@@ -11,6 +12,7 @@ class oEmbed
     const HYDRATORS = [
         Video::class => VideoEmbedHydrator::class,
         Photo::class => PhotoEmbedHydrator::class,
+        Gif::class => GifEmbedHydrator::class,
     ];
 
     public function hydrateLinkEntity(Link $link)

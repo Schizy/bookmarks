@@ -18,7 +18,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @DiscriminatorColumn(name="link_type", type="string")
  * @DiscriminatorMap({
  *     "photo" = "Photo",
- *     "video" = "Video"
+ *     "video" = "Video",
+ *     "gif" = "Gif"
  * })
  */
 abstract class Link
