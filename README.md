@@ -49,3 +49,13 @@ Exemples d'utilisation:
 
 *Récupération de la liste:*
 ![Image](./examples/exemple-8.png)
+
+
+Comment faire évoluer ?
+========================
+
+L'architecture est pensée pour faire évoluer facilement les besoins et si nous voulions supporter les gifs (Giphy), il suffirait de merger cette branche :
+https://github.com/Schizy/bookmarks/commit/cfecb5a50db0558a24872d312b87b84a8e842561
+
+Avec seulement ce code, on obtient le résultat suivant :
+![Image](./examples/exemple-9.png)
