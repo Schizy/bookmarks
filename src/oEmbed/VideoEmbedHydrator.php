@@ -2,13 +2,11 @@
 
 namespace App\oEmbed;
 
-use App\Entity\Link;
-
-class VideoEmbedHydrator extends oEmbed
+class VideoEmbedHydrator extends oEmbedHydrator
 {
-    public function hydrate(Link $link)
+    protected function hydrate()
     {
-        $link
+        $this->link
             ->setDuration($this->data['duration'])
             ->setWidth($this->data['width'])
             ->setHeight($this->data['height']);

@@ -2,9 +2,7 @@
 
 namespace App\oEmbed;
 
-use App\Entity\Link;
-
-class PhotoEmbedHydrator extends oEmbed
+class PhotoEmbedHydrator extends oEmbedHydrator
 {
     protected function sanitizeUrl($url): string
     {
@@ -12,9 +10,9 @@ class PhotoEmbedHydrator extends oEmbed
         return str_ireplace('https://flickr.com/', 'https://www.flickr.com/', $url);
     }
 
-    public function hydrate(Link $link)
+    protected function hydrate()
     {
-        $link
+        $this->link
             ->setWidth($this->data['width'])
             ->setHeight($this->data['height']);
     }
