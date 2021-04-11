@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\LinkRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\DiscriminatorColumn;
 use Doctrine\ORM\Mapping\DiscriminatorMap;
@@ -51,9 +53,15 @@ abstract class Link
      */
     private $createdAt;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Keyword::class, mappedBy="links", cascade={"persist"})
+     */
+    private $keywords;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
+        $this->keywords = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -102,6 +110,33 @@ abstract class Link
     public function setCreatedAt($createdAt): self
     {
         $this->createdAt = $createdAt;
+        return $this;
+    }
+
+    /**
+     * @return Collection|Keyword[]
+     */
+    public function getKeywords(): Collection
+    {
+        return $this->keywords;
+    }
+
+    public function addKeyword(Keyword $keyword): self
+    {
+        if (!$this->keywords->contains($keyword)) {
+            $this->keywords[] = $keyword;
+            $keyword->addLink($this);
+        }
+
+        return $this;
+    }
+
+    public function removeKeyword(Keyword $keyword): self
+    {
+        if ($this->keywords->removeElement($keyword)) {
+            $keyword->removeLink($this);
+        }
+
         return $this;
     }
 }
